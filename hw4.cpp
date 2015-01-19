@@ -25,7 +25,7 @@ private:
 	int sum,sum_count,sum_input;
 public:
 	double inorder_avg(int count);
-
+	int search_leftsize(int value);
 	void insert(int data_in);
 
 	BST();
@@ -40,7 +40,7 @@ BST::BST(){
 }
 
 void BST::insert(int data_in){
-
+	cout << "input:" << data_in << " ";
 	if (root.data==0){
 		root.data = data_in;
 		node* tmp_new_l = newNode(0);
@@ -62,12 +62,15 @@ void BST::insert(int data_in){
 				tmp->right = tmp_new_r;
 				tmp->data = data_in;
 				quit=0;
+				cout << "\n";
 			}else{
 				if (tmp->data > data_in){
 					tmp->leftSize++;
 					tmp = tmp->left;
+					cout << "left ";
 				}else if(tmp->data < data_in){
 					tmp = tmp->right;
+					cout << "right ";
 				}
 			}
 
@@ -109,8 +112,79 @@ double BST::inorder_avg(int count){
 	return ans;
 }
 
+int BST::search_leftsize(int value){
+	node *tmp;
+	tmp = &root;
+	int quit = 1;
+	while(quit){
+		if(tmp->data==0){
+			return -1;
+		}else{
+			if (tmp->data > value){
+				tmp = tmp->left;
+			}else if(tmp->data < value){
+				tmp = tmp->right;
+			}else{
+				return tmp->leftSize;
+			}
+		}
+
+	}
+	return -1;
+}
+
+class intQueue{
+private:
+	int list[100];
+	int front;
+	int rear;
+public:
+	void queue(int value);
+	int dequeue();
+	intQueue();
+
+};
+
+intQueue::intQueue(){
+	front=0;
+	rear=0;
+}
+void intQueue::queue(int value){
+	if (front - 1 == rear){
+		cout << "full\n";
+	}else{
+		list[rear] = value;
+		rear++;
+
+	}
+}
+int intQueue::dequeue(){
+	if (front==rear){
+		return -1;
+	}else{
+		int tmp = list[front % 100];
+		front++;
+		return tmp;
+	}
+}
+
+
+
 int main(){
 	BST BST;
+	intQueue queue;
+	queue.queue(1);
+	queue.queue(2);
+	cout << queue.dequeue() << "\n";
+	queue.queue(3);
+	queue.queue(4);
+	cout << queue.dequeue() << "\n";
+	cout << queue.dequeue() << "\n";
+	queue.queue(5);
+	cout << queue.dequeue() << "\n";
+	cout << queue.dequeue() << "\n";
+	cout << queue.dequeue() << "\n";
+	queue.queue(6);
 	
 
 	cout << "Welcome , how many int you want to input? >> ";
@@ -118,11 +192,20 @@ int main(){
 	cin >> times;
 
 	int input_tmp;
+
+	int input_array[100];
+
 	for (int i = 1; i <= times; ++i){
 		cout << "Please input No." << i << " int >>";
 		cin >> input_tmp;
 		BST.insert(input_tmp);
+		input_array[i]=input_tmp;
 	}
+
+	for (int i = 1; i <= times; ++i){
+		cout << BST.search_leftsize(input_array[i]) << ",";
+	}
+	
 
 	int quit=1;
 	while(quit){
