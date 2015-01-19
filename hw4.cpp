@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 using namespace std;
 
 struct node{
@@ -27,6 +28,7 @@ public:
 	double inorder_avg(int count);
 	int search_leftsize(int value);
 	void insert(int data_in);
+	void list_leftsize();
 
 	BST();
 };
@@ -40,14 +42,14 @@ BST::BST(){
 }
 
 void BST::insert(int data_in){
-	cout << "input:" << data_in << " ";
+	// cout << "input:" << data_in << " ";
 	if (root.data==0){
 		root.data = data_in;
 		node* tmp_new_l = newNode(0);
 		node* tmp_new_r = newNode(0);
 		root.left = tmp_new_l;
 		root.right = tmp_new_r;
-		cout << "\n";
+		// cout << "\n";
 	}else{
 
 		node *tmp;
@@ -62,15 +64,15 @@ void BST::insert(int data_in){
 				tmp->right = tmp_new_r;
 				tmp->data = data_in;
 				quit=0;
-				cout << "\n";
+				// cout << "\n";
 			}else{
 				if (tmp->data > data_in){
 					tmp->leftSize++;
 					tmp = tmp->left;
-					cout << "left ";
+					// cout << "left ";
 				}else if(tmp->data < data_in){
 					tmp = tmp->right;
-					cout << "right ";
+					// cout << "right ";
 				}
 			}
 
@@ -133,60 +135,27 @@ int BST::search_leftsize(int value){
 	return -1;
 }
 
-class intQueue{
-private:
-	int list[100];
-	int front;
-	int rear;
-public:
-	void queue(int value);
-	int dequeue();
-	intQueue();
-
-};
-
-intQueue::intQueue(){
-	front=0;
-	rear=0;
-}
-void intQueue::queue(int value){
-	if (front - 1 == rear){
-		cout << "full\n";
-	}else{
-		list[rear] = value;
-		rear++;
-
+void BST::list_leftsize(){
+	cout << "leftSize list:";
+	queue<node*> Q;
+	Q.push(&root);
+	while(!Q.empty()){
+		node *current = Q.front();
+		cout << current->leftSize << " ";
+		if(current->left->data !=0){
+			Q.push(current->left);
+		}
+		if(current->right->data!=0){
+			Q.push(current->right);
+		}
+		Q.pop();
 	}
+	cout << "\n\n";
 }
-int intQueue::dequeue(){
-	if (front==rear){
-		return -1;
-	}else{
-		int tmp = list[front % 100];
-		front++;
-		return tmp;
-	}
-}
-
 
 
 int main(){
 	BST BST;
-	intQueue queue;
-	queue.queue(1);
-	queue.queue(2);
-	cout << queue.dequeue() << "\n";
-	queue.queue(3);
-	queue.queue(4);
-	cout << queue.dequeue() << "\n";
-	cout << queue.dequeue() << "\n";
-	queue.queue(5);
-	cout << queue.dequeue() << "\n";
-	cout << queue.dequeue() << "\n";
-	cout << queue.dequeue() << "\n";
-	queue.queue(6);
-	
-
 	cout << "Welcome , how many int you want to input? >> ";
 	int times;
 	cin >> times;
@@ -202,10 +171,7 @@ int main(){
 		input_array[i]=input_tmp;
 	}
 
-	for (int i = 1; i <= times; ++i){
-		cout << BST.search_leftsize(input_array[i]) << ",";
-	}
-	
+	BST.list_leftsize();
 
 	int quit=1;
 	while(quit){
