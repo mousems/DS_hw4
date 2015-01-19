@@ -83,7 +83,6 @@ int BST::inorder_r(node *node_in){
 		if (sum_input > sum_count){
 			sum_count++;
 			sum += node_in->data;
-			cout << node_in->data << ",";
 		}else{
 			return 0;
 		}
@@ -112,22 +111,29 @@ double BST::inorder_avg(int count){
 
 int main(){
 	BST BST;
-	BST.insert(58);
-	BST.insert(30);
-	BST.insert(75);
-	BST.insert(2);
-	BST.insert(80);
-	BST.insert(90);
-	BST.insert(65);
-	BST.insert(68);
-	BST.insert(99);
-	BST.insert(60);
-	BST.insert(78);
-	BST.insert(40);
-	BST.insert(35);
-	cout << BST.inorder_avg(13) << "\n";
-	cout << BST.inorder_avg(14)<< "\n";
-	cout << BST.inorder_avg(15)<< "\n";
+	
+
+	cout << "Welcome , how many int you want to input? >> ";
+	int times;
+	cin >> times;
+
+	int input_tmp;
+	for (int i = 1; i <= times; ++i){
+		cout << "Please input No." << i << " int >>";
+		cin >> input_tmp;
+		BST.insert(input_tmp);
+	}
+
+	int quit=1;
+	while(quit){
+		cout << "\n" << "Top n avg. you want to know? (0 for quit) >> ";
+		cin >> input_tmp;
+		if (input_tmp==0){
+			quit=0;
+		}else{
+			cout << "Top " << input_tmp << "'s avg is: " << BST.inorder_avg(input_tmp) << "\n";
+		}
+	}
 	
 	
     return 0;
