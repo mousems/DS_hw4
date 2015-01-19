@@ -21,11 +21,12 @@ class BST
 {
 private:
 	node root;
-	void inorder_r(node *node_in);
-	int sum;
+	int inorder_r(node *node_in);
+	int sum,sum_count,sum_input;
 public:
+	double inorder_avg(int count);
+
 	void insert(int data_in);
-	void inorder();
 
 	BST();
 };
@@ -34,6 +35,8 @@ BST::BST(){
 	node* tmp = newNode(0);
 	root = *tmp;
 	sum=0;
+	sum_count=0;
+	sum_input=0;
 }
 
 void BST::insert(int data_in){
@@ -74,27 +77,57 @@ void BST::insert(int data_in){
 
 }
 
-void BST::inorder_r(node *node_in){
+int BST::inorder_r(node *node_in){
 	if (node_in->data!=0){
 		BST::inorder_r(node_in->right);
-		cout << node_in->data << " ";
+		if (sum_input > sum_count){
+			sum_count++;
+			sum += node_in->data;
+			cout << node_in->data << ",";
+		}else{
+			return 0;
+		}
+
 		BST::inorder_r(node_in->left);
+		return 0;
+	}else{
+		return 0;
 	}
 }
 
-void BST::inorder(){
+double BST::inorder_avg(int count){
+	sum=0;
+	sum_count=0;
+	sum_input=count;
 	BST::inorder_r(&root);
+
+	double ans;
+	if (sum_count!=sum_input){
+		ans = -1;
+	}else{
+		ans = ((double)sum)/count;
+	}
+	return ans;
 }
 
 int main(){
 	BST BST;
-	BST.insert(5);
-	BST.insert(4);
-	BST.insert(6);
-	BST.insert(7);
-	BST.insert(3);
+	BST.insert(58);
+	BST.insert(30);
+	BST.insert(75);
 	BST.insert(2);
-	BST.inorder();
+	BST.insert(80);
+	BST.insert(90);
+	BST.insert(65);
+	BST.insert(68);
+	BST.insert(99);
+	BST.insert(60);
+	BST.insert(78);
+	BST.insert(40);
+	BST.insert(35);
+	cout << BST.inorder_avg(13) << "\n";
+	cout << BST.inorder_avg(14)<< "\n";
+	cout << BST.inorder_avg(15)<< "\n";
 	
 	
     return 0;
